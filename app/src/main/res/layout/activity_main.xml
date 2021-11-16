@@ -4,20 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/total_mines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total of mines" />
+        android:text="Total of mines"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/marked_mines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mines marked"
-        android:layout_below="@id/total_mines"/>
+        android:layout_below="@id/total_mines"
+        android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/reset_btn"
@@ -35,10 +38,10 @@
         android:text="Mark" />
 
     <com.android.cleophee_itier_3076679_ass2.GameGridView
+        android:id="@+id/gameGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/gameGrid"/>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
