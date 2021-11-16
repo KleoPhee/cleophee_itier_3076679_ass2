@@ -27,14 +27,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reset"
-        android:layout_above="@id/gameGrid"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="50dp"/>
 
     <Button
         android:id="@+id/mark_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/reset_btn"
+        android:layout_alignParentEnd="true"
         android:text="Mark" />
 
     <com.android.cleophee_itier_3076679_ass2.GameGridView
