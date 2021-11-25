@@ -11,19 +11,19 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 
-
-
-
 class GameGridView(context: Context?, attrs: AttributeSet?) :
     View(context, attrs)
 {
     private val cellSide: Int = 100
     private val originX: Int = 35
     private val originY: Int = 200
+    var colorD = Color.BLACK //default color
+    var colorY = Color.YELLOW
+    // assign value color to black to be able to change it and not redraw
 
     fun setColor(paint: Paint, rect: Rect, canvas: Canvas?)
     {
-        paint.color = Color.BLACK
+        paint.color = colorD
         paint.style = Paint.Style.FILL
         canvas?.drawRect(
             rect,
@@ -37,42 +37,32 @@ class GameGridView(context: Context?, attrs: AttributeSet?) :
         )
     }
 
-    private fun DrawBoard(canvas: Canvas?) {
+    private fun drawBoard(canvas: Canvas) {
         val paint = Paint()
-        for (j in 0..4) {
-            for (i in 0..4) {
-                // to prevent any null value adding of '?'
-                val first = Rect(
-                    originX + 2 * i * cellSide,
-                    originY + 2 * j * cellSide,
-                    originX + (2 * i + 1) * cellSide,
-                    originY + (2 * j + 1) * cellSide)
-                setColor(paint, first, canvas)
-                val second = Rect(
-                    originX + (2 * i + 1) * cellSide,
-                    originY + (2 * j + 1) * cellSide,
-                    originX + (2 * i + 2) * cellSide,
-                    originY + (2 * j + 2) * cellSide)
-                setColor(paint, second, canvas)
-                val third = Rect(
-                    originX + (2 * i + 1) * cellSide,
-                    originY+ 2 * j * cellSide,
-                    originX + (2 * i + 2) * cellSide,
-                    originY + (2 * j + 1) * cellSide)
-                setColor(paint, third, canvas)
-                val forth = Rect(
-                    originX + 2 * i * cellSide,
-                    originY+ (2 * j + 1) * cellSide,
-                    originX + (2 * i + 1) * cellSide,
-                    originY + (2 * j + 2) * cellSide)
-                setColor(paint, forth, canvas)
+        paint.color = colorD;
+
+        val rectNB: Int = 10;
+        val size = canvas.width
+        val height = canvas.height
+        val heightRect = height / rectNB
+        val sizeRect = size / rectNB
+        val rect = Rect(heightRect, sizeRect, sizeRect, heightRect);
+
+        for (i in 0..rectNB) {
+            canvas.save()
+            for (j in 0..rectNB) {
+                canvas.save()
+                canvas.translate((i * sizeRect).toFloat(), (j * sizeRect).toFloat())
+                setColor(paint, rect, canvas)
+                canvas.restore()
             }
+            canvas.restore()
         }
     }
 
     //to know what to draw
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        DrawBoard(canvas)
+        drawBoard(canvas)
     }
 }
