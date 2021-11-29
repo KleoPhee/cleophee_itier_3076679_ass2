@@ -14,11 +14,11 @@ import android.widget.Toast
 class GameGridView(context: Context?, attrs: AttributeSet?) :
     View(context, attrs)
 {
-    private val cellSide: Int = 100
-    private val originX: Int = 35
-    private val originY: Int = 200
     var colorD = Color.BLACK //default color
-    var colorY = Color.YELLOW
+    var isTouched = false
+    val listCell = mutableListOf<Cell>()
+
+    // list de mes carré de la class carré
     // assign value color to black to be able to change it and not redraw
 
     fun setColor(paint: Paint, rect: Rect, canvas: Canvas?)
@@ -29,19 +29,19 @@ class GameGridView(context: Context?, attrs: AttributeSet?) :
             rect,
             paint
         )
-        paint.color = Color.WHITE
+        /*paint.color = Color.WHITE
         paint.style = Paint.Style.STROKE
         canvas?.drawRect(
             rect,
             paint
-        )
+        )*/
     }
 
     private fun drawBoard(canvas: Canvas) {
         val paint = Paint()
         paint.color = colorD;
 
-        val rectNB: Int = 10;
+        val rectNB: Int = 11;
         val size = canvas.width
         val height = canvas.height
         val heightRect = height / rectNB
@@ -50,10 +50,19 @@ class GameGridView(context: Context?, attrs: AttributeSet?) :
 
         for (i in 0..rectNB) {
             canvas.save()
-            for (j in 0..rectNB) {
+            for (j in 1..10) {
                 canvas.save()
                 canvas.translate((i * sizeRect).toFloat(), (j * sizeRect).toFloat())
+                //canvas.drawRect(rect, paint)
                 setColor(paint, rect, canvas)
+                val x: Float = (i*sizeRect).toFloat()
+                val y: Float = (j*sizeRect).toFloat()
+                var cellElement = Cell();
+                cellElement.ColorCell = colorD
+                cellElement.xStart = x;
+                cellElement.yStart = y;
+                cellElement.rect = rect
+                listCell.add(cellElement)
                 canvas.restore()
             }
             canvas.restore()
@@ -64,5 +73,27 @@ class GameGridView(context: Context?, attrs: AttributeSet?) :
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawBoard(canvas)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val x = event?.getX();
+        val y = event?.getY();
+
+        if (event?.action == MotionEvent.ACTION_DOWN) {
+            for (cell in listCell) {
+                if (cell.rect.contains(event?.getRawX()?.toInt(), event?.getRawY()?.toInt())) {
+                    if (!cell.isTouched) {
+                        colorD = Color.GRAY
+                        cell.isTouched = true
+                    }
+                }
+            }
+            invalidate();
+        } /*else if (event?.action == MotionEvent.ACTION_DOWN && !isTouched){
+            colorD = Color.GRAY;
+            isTouched = true
+            invalidate();
+        }*/
+        return super.onTouchEvent(event)
     }
 }
